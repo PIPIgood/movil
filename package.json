@@ -9,6 +9,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@dietime/react-native-date-picker": "^1.2.1",
+    "datepick": "^0.0.3",
     "expo": "~49.0.12",
     "expo-status-bar": "~1.6.0",
     "react": "18.2.0",
