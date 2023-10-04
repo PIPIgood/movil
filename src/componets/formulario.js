@@ -11,8 +11,7 @@ import {
      } from "react-native";
 import DatePicker from '@dietime/react-native-date-picker';
 
-function Formulario(props,setModalVisible) {
-    const { modalVisible } = props;
+function Formulario({modalVisible, setActive}) {
     const [date, setDate] = useState(null);
     return (
         <Modal animationType="slide" visible={modalVisible}>
@@ -21,7 +20,7 @@ function Formulario(props,setModalVisible) {
                 <View ><Text style={styles.tituloo}>Nueva Cita </Text></View>
                 <Pressable
                  style={styles.btnCancelar}
-                 onLongPress={() => setModalVisible(!modalVisible)}
+                 onLongPress={() => setActive(!modalVisible)}
                  >
                     <Text style={styles.btnCancelarTexto}>Cancelar
                     </Text>
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
     contenido: {
         backgroundColor: '',
         flex: 1,
-        backgroundColor: '#5f35B9'
+        backgroundColor: '#b9355a'
     },
     tituloo: {
         marginTop: 30,
