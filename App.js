@@ -1,29 +1,64 @@
 import { useState } from 'react';
-import { Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, SafeAreaView, StyleSheet, Text, View, FlatList } from 'react-native';
 
 import Formulario from './src/componets/formulario.js';
 import { StatusBar } from 'expo-status-bar';
+import Paciente from './src/componets/Pasiente.js';
 
 export default function App() {
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [pasientes, setPaciente] = useState(data)
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style='inverted' />
       <Text style={styles.titulo}>Administrador de citas</Text>
       <Text style={styles.tituloBold}>Veterinaria</Text>
-      <Pressable onPress={() => {setModalVisible(!modalVisible)}} 
-      style={styles.btnNuevaCita}>
+      <Pressable onPress={() => { setModalVisible(!modalVisible) }}
+        style={styles.btnNuevaCita}>
         <Text style={styles.btnTextoNuevaCita}>Nueva Cita</Text>
       </Pressable>
-      <Formulario modalVisible={modalVisible} setActive={setModalVisible}
-      setModalVisible={setModalVisible}
+
+      {pasientes.length === 0 ?
+        <Text style={styles.noPasientes}>No hay pasientes aun</Text> :
+         <FlatList
+           style={styles.listado}
+           data={pasientes}
+           keyExtractor={(item) => item.id}
+           renderItem={({ item }) => {
+            return (
+              <Paciente
+                item={item}
+              />
+
+            )
+          }
+
+           }
+
+        />
+      }
+      <Formulario
+        modalVisible={modalVisible}
+        setActive={setModalVisible}
+        setPacientes={setPaciente}
+        pasientes={pasientes}
       />
     </SafeAreaView>
   );
 }
 
+const data = [
+  {
+    pasiente:"Alan",
+    fecha:Date.now()
+  },
+  {
+    pasiente:"manuel",
+    fecha:Date.now()
+  },
+]
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#f3f4f6',
@@ -40,10 +75,10 @@ const styles = StyleSheet.create({
   tituloBold: {
     textAlign: 'center',
     fontWeight: 'bold',
-    color: '#6d28d9',
+    color: '#a48d27',
   },
   btnNuevaCita: {
-    backgroundColor: '#6d28d9',
+    backgroundColor: '#2785a4',
     padding: 20,
     marginTop: 20,
     marginHorizontal: 20,
@@ -55,5 +90,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     textTransform: 'uppercase',
+  },
+  noPasientes: {
+    marginTop: 40,
+    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: '600',
+
+  },
+  listado: {
+    marginTop: 50,
+    marginHorizontal: 30,
+
+
   }
 });

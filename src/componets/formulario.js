@@ -1,81 +1,119 @@
 import React, { useState } from "react";
-import { 
+import {
     Modal,
     Pressable,
     SafeAreaView,
     ScrollView,
-    StyleSheet, 
+    StyleSheet,
     Text,
-    TextInput, 
-    View
-     } from "react-native";
+    TextInput,
+    View,
+    Alert,
+} from "react-native";
 import DatePicker from '@dietime/react-native-date-picker';
 
-function Formulario({modalVisible, setActive}) {
-    const [date, setDate] = useState(null);
+function formulario({ modalVisible, setActive, pacientes, setPacientes }) {
+    const [paciente, setPaciente] = useState('')
+    const [propietario, setPropietario] = useState('')
+    const [email, setEmail] = useState('')
+    const [telefono, setTelefono] = useState('')
+    const [sintomas, setSintomas] = useState('')
+    const [Fecha, setFecha] = useState('')
+
+    const handleCita = () => {
+        if ([paciente, propietario, email, Fecha, sintomas].includes('')) {
+            Alert.alert(
+                'Error', 'Todos los campos son obligatorios',
+                [{ text: 'Cancelar', style: 'destructive' }, { text: 'ok' }]
+
+            )
+            return
+
+        }
+
+        const NuevoPaciente = {
+            // id:Date.now(),
+            pasiente:paciente,
+            // propietario,
+            // email,
+            // telefono,
+            fecha:Date.now()
+            // sintomas,
+        }
+        setPacientes(prevState => [...prevState, NuevoPaciente])
+        setActive(!modalVisible)
+
+        setPaciente('')
+        setPropietario('')
+        setEmail('')
+        setTelefono('')
+        setFecha('')
+        setSintomas('')
+    }
+
     return (
         <Modal animationType="slide" visible={modalVisible}>
             <SafeAreaView style={styles.contenido}>
                 <ScrollView>
-                <View ><Text style={styles.tituloo}>Nueva Cita </Text></View>
-                <Pressable
-                 style={styles.btnCancelar}
-                 onLongPress={() => setActive(!modalVisible)}
-                 >
-                    <Text style={styles.btnCancelarTexto}>Cancelar
-                    </Text>
-                </Pressable>
+                    <View ><Text style={styles.tituloo}>Nueva Cita </Text></View>
+                    <Pressable
+                        style={styles.btnCancelar}
+                        onPress={() => setActive(!modalVisible)}
+                    >
+                        <Text style={styles.btnCancelarTexto}>Cancelar
+                        </Text>
+                    </Pressable>
 
-                <View style={styles.campo}>
-                    <Text style={styles.label}
-                    >Nombre del paciente </Text>
-                    <TextInput style={styles.input}
-                     placeholder="Nombre del paciente"
-                      placeholderTextColor={'#646464'}></TextInput>
-                </View>
-                <View style={styles.campo}>
-                    <Text style={styles.label}
-                    >Nombre del propietario </Text>
-                    <TextInput style={styles.input}
-                     placeholder="Nombre del propietario" 
-                     placeholderTextColor={'#646464'}></TextInput>
-                </View>
-                <View style={styles.campo}>
-                    <Text style={styles.label}
-                    >Email del propietario </Text>
-                    <TextInput style={styles.input} 
-                    placeholder="Email del propietario" 
-                    placeholderTextColor={'#646464'} keyboardType="email-address"></TextInput>
-                </View>
-                <View style={styles.campo}>
-                    <Text style={styles.label}
-                    >Teléfono del propietario </Text>
-                    <TextInput style={styles.input} 
-                    placeholder="Teléfono del propietario" 
-                    placeholderTextColor={'#646464'} keyboardType="number-pad"></TextInput>
-                </View>
-                <View style={styles.campo}>
-                    <Text style={styles.label}
-                    >Fecha Alta</Text>
-                    <DatePicker
-                        value={date}
-                    />
-                </View>
-                <View style={styles.campo}>
-                    <Text style={styles.label}>Sintomas: </Text>
-                    <TextInput style={styles.input}
-                     placeholder="Sintomas" 
-                     placeholderTextColor={'#646464'} keyboardType="number-pad"></TextInput>
-                </View>
-                <Pressable
-                 style={styles.btnAgregar}
-                 >
-                    <Text style={styles.btnNuevaCita}>Agregar Cita
-                    </Text>
-                </Pressable>
+                    <View style={styles.campo}>
+                        <Text style={styles.label}
+                        >Nombre del paciente </Text>
+                        <TextInput style={styles.input}
+                            placeholder="Nombre del paciente"
+                            placeholderTextColor={'#646464'} value={paciente} onChangeText={setPaciente}></TextInput>
+                    </View>
+                    <View style={styles.campo}>
+                        <Text style={styles.label}
+                        >Nombre del propietario </Text>
+                        <TextInput style={styles.input}
+                            placeholder="Nombre del propietario"
+                            placeholderTextColor={'#646464'} value={propietario} onChangeText={setPropietario}></TextInput>
+                    </View>
+                    <View style={styles.campo}>
+                        <Text style={styles.label}
+                        >Email del propietario </Text>
+                        <TextInput style={styles.input}
+                            placeholder="Email del propietario"
+                            placeholderTextColor={'#646464'} keyboardType="email-address" value={email} onChangeText={setEmail}></TextInput>
+                    </View>
+                    <View style={styles.campo}>
+                        <Text style={styles.label}
+                        >Teléfono del propietario </Text>
+                        <TextInput style={styles.input}
+                            placeholder="Teléfono del propietario"
+                            placeholderTextColor={'#646464'} keyboardType="number-pad" value={telefono} onChangeText={setTelefono}></TextInput>
+                    </View>
+                    <View style={styles.campo}>
+                        <Text style={styles.label}
+                        >Fecha Alta</Text>
+                        <DatePicker
+                            value={Fecha} onChange={setFecha} />
+                    </View>
+                    <View style={styles.campo}>
+                        <Text style={styles.label}>Sintomas: </Text>
+                        <TextInput style={styles.input}
+                            placeholder="Sintomas"
+                            placeholderTextColor={'#646464'} value={sintomas} onChangeText={setSintomas}></TextInput>
+                    </View>
+                    <Pressable
+                        style={styles.btnNuevaCita}
+                        onPress={handleCita}
+                    >
+                        <Text style={styles.btnCitaTexto}>Agregar Cita
+                        </Text>
+                    </Pressable>
                 </ScrollView>
             </SafeAreaView>
-            
+
         </Modal>
     )
 }
@@ -84,7 +122,7 @@ const styles = StyleSheet.create({
     contenido: {
         backgroundColor: '',
         flex: 1,
-        backgroundColor: '#b9355a'
+        backgroundColor: '#2785a4'
     },
     tituloo: {
         marginTop: 30,
@@ -99,37 +137,37 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
 
-    btnCancelar:{
-        marginTop:30,
-        marginBottom:30,
-        backgroundColor: '#5827A4',
-        marginHorizontal:30,
-        padding:20,
-        borderRadius:10,
+    btnCancelar: {
+        marginTop: 30,
+        marginBottom: 30,
+        backgroundColor: '#a42729',
+        marginHorizontal: 30,
+        padding: 20,
+        borderRadius: 10,
 
     },
-    btnCancelarTexto:{
-        color:'#fff',
-        textAlign:'center',
-        fontWeight:'900',
-        fontSize:20,
-        textTransform:'uppercase'
+    btnCancelarTexto: {
+        color: '#fff',
+        textAlign: 'center',
+        fontWeight: '900',
+        fontSize: 20,
+        textTransform: 'uppercase'
     },
-    btnAgregar:{
+    btnNuevaCita: {
         marginVertical: 50,
-        backgroundColor:'#F59E0B',
-        paddingVertical:15,
-        marginHorizontal:30,
-        borderRadius:10,
+        backgroundColor: '#6ca427',
+        paddingVertical: 15,
+        marginHorizontal: 30,
+        borderRadius: 10,
 
 
     },
-    btnNuevaCita:{
-        textAlign:'center',
-        color:'#5827A4',
-        textTransform:'uppercase',
-        fontWeight:'900',
-        fontSize:16,
+    btnCitaTexto: {
+        textAlign: 'center',
+        color: '#fff',
+        textTransform: 'uppercase',
+        fontWeight: '900',
+        fontSize: 16,
     },
 
     campo: {
@@ -152,4 +190,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Formulario
+export default formulario
