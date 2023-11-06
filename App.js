@@ -8,7 +8,10 @@ import Paciente from './src/componets/Pasiente.js';
 export default function App() {
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [pasientes, setPaciente] = useState(data)
+  const [pasientes, setPacientes] = useState(data)
+  const pasienteEditar = id => {
+    console.log('editando...', id)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -30,7 +33,9 @@ export default function App() {
             return (
               <Paciente
                 item={item}
-              />
+                setModalVisible = {setModalVisible}
+                pasienteEditar = {pasienteEditar}
+              /> 
 
             )
           }
@@ -42,7 +47,7 @@ export default function App() {
       <Formulario
         modalVisible={modalVisible}
         setActive={setModalVisible}
-        setPacientes={setPaciente}
+        setPacientes={setPacientes}
         pasientes={pasientes}
       />
     </SafeAreaView>

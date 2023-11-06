@@ -7,8 +7,8 @@ import {
 
 } from 'react-native'
 
-const Paciente = ({ item }) => {
-    const { pasiente, fecha } = item
+const Paciente = ({ item,setModalVisible,pasienteEditar}) => {
+    const { pasiente, fecha ,id} = item
     const fornatearFecha = fecha => {
         const nuevaFecha = new Date(fecha)
         const opcion = {
@@ -28,7 +28,15 @@ const Paciente = ({ item }) => {
 
            
             <View style={style.contenedorBotones}>
-                <Pressable style={[style.btn, style.btnEditar]}>
+                <Pressable 
+            
+                style={[style.btn, style.btnEditar]}
+                onLongPress={() => {
+                    setModalVisible(true)
+                    pasienteEditar(id)
+                }}
+                
+                >
                     <Text style={style.btnTexto}>Editar</Text>
                 </Pressable>
                   
