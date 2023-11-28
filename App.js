@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pressable, SafeAreaView, StyleSheet, Text, View, FlatList } from 'react-native';
+import { Pressable, SafeAreaView, StyleSheet, Text, View, FlatList, Alert, } from 'react-native';
 
 import Formulario from './src/componets/formulario.js';
 import { StatusBar } from 'expo-status-bar';
@@ -8,9 +8,34 @@ import Paciente from './src/componets/Pasiente.js';
 export default function App() {
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [pasientes, setPacientes] = useState(data)
+  const [pasientes, setPacientes] = useState([])
+  const [pasiente, setPaciente] = useState({})
+
   const pasienteEditar = id => {
-    console.log('editando...', id)
+    const pasienteEditar = pasientes.filter(paciente => paciente.id === id)
+    setPaciente(pasienteEditar[0])
+  }
+
+  const pasienteEliminar = id => {
+    Alert.alert(
+      '¿Deseas eliminar el paciente?', 'un paciente eliminado no se puede recuperar',
+      [
+        {
+          text: 'cancelar'
+        },
+        {
+          text:'Si,eliminar', onPress:() =>{
+            console.log('eliminando...')
+          }
+        }
+      ]
+    )
+
+
+
+
+
+
   }
 
   return (
@@ -25,22 +50,23 @@ export default function App() {
 
       {pasientes.length === 0 ?
         <Text style={styles.noPasientes}>No hay pasientes aun</Text> :
-         <FlatList
-           style={styles.listado}
-           data={pasientes}
-           keyExtractor={(item) => item.id}
-           renderItem={({ item }) => {
+        <FlatList
+          style={styles.listado}
+          data={pasientes}
+          key={(item) => item.id}
+          renderItem={({ item }) => {
             return (
               <Paciente
                 item={item}
-                setModalVisible = {setModalVisible}
-                pasienteEditar = {pasienteEditar}
-              /> 
+                setModalVisible={setModalVisible}
+                pasienteEditar={pasienteEditar}
+                pasienteEliminar={pasienteEliminar}
+              />
 
             )
           }
 
-           }
+          }
 
         />
       }
@@ -49,6 +75,8 @@ export default function App() {
         setActive={setModalVisible}
         setPacientes={setPacientes}
         pasientes={pasientes}
+        pasiente={pasiente}
+        setPaciente={setPaciente}
       />
     </SafeAreaView>
   );
@@ -56,12 +84,12 @@ export default function App() {
 
 const data = [
   {
-    pasiente:"Alan",
-    fecha:Date.now()
+    pasiente: "Alan",
+    fecha: Date.now()
   },
   {
-    pasiente:"manuel",
-    fecha:Date.now()
+    pasiente: "manuel",
+    fecha: Date.now()
   },
 ]
 const styles = StyleSheet.create({

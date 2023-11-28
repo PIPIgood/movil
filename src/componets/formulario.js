@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Modal,
     Pressable,
@@ -12,13 +12,27 @@ import {
 } from "react-native";
 import DatePicker from '@dietime/react-native-date-picker';
 
-function formulario({ modalVisible, setActive, pacientes, setPacientes }) {
+function formulario({ modalVisible, setActive, pacientes, setPacientes, pasiente: pasienteObj, setPaciente: setPacienteApp }) {
     const [paciente, setPaciente] = useState('')
+    const [id,setid] =useState('')
     const [propietario, setPropietario] = useState('')
     const [email, setEmail] = useState('')
     const [telefono, setTelefono] = useState('')
     const [sintomas, setSintomas] = useState('')
     const [Fecha, setFecha] = useState('')
+
+
+    useEffect(() => {
+        if(Object.keys(pasienteObj).length > 0 ){
+        setid(pasienteObj.id)
+        setPaciente(pasienteObj.paciente)
+        setPropietario(pasienteObj.propietario)
+        setEmail(pasienteObj.email)
+        setTelefono(pasienteObj.telefono)
+        setSintomas(pasienteObj.sintomas)
+        setFecha(pasienteObj.fecha)
+    }
+    }, [pacientes])
 
     const handleCita = () => {
         if ([paciente, propietario, email, Fecha, sintomas].includes('')) {
@@ -33,13 +47,15 @@ function formulario({ modalVisible, setActive, pacientes, setPacientes }) {
 
         const NuevoPaciente = {
             // id:Date.now(),
-            pasiente:paciente,
+            pasiente: paciente,
             // propietario,
             // email,
             // telefono,
-            fecha:Date.now()
+            fecha: Date.now()
             // sintomas,
         }
+
+        
         setPacientes(prevState => [...prevState, NuevoPaciente])
         setActive(!modalVisible)
 

@@ -7,12 +7,11 @@ import {
 
 } from 'react-native'
 
-const Paciente = ({ item,setModalVisible,pasienteEditar}) => {
+const Paciente = ({ item,setModalVisible,pasienteEditar, pasienteEliminar}) => {
     const { pasiente, fecha ,id} = item
-    const fornatearFecha = fecha => {
+    const formatearFecha = fecha => {
         const nuevaFecha = new Date(fecha)
         const opcion = {
-            weekday: 'long',
             year: 'numeric',
             month: 'long',
             day: 'numeric'
@@ -24,14 +23,14 @@ const Paciente = ({ item,setModalVisible,pasienteEditar}) => {
         <View style={style.contenedor}>
             <Text style={style.label}>pasiente:</Text>
             <Text style={style.texto}>{pasiente}</Text>
-            <Text style={style.fecha}>{fornatearFecha(fecha)}</Text>
+            <Text style={style.fecha}>{formatearFecha(fecha)}</Text>
 
            
             <View style={style.contenedorBotones}>
                 <Pressable 
             
                 style={[style.btn, style.btnEditar]}
-                onLongPress={() => {
+                onPress={() => {
                     setModalVisible(true)
                     pasienteEditar(id)
                 }}
@@ -40,7 +39,7 @@ const Paciente = ({ item,setModalVisible,pasienteEditar}) => {
                     <Text style={style.btnTexto}>Editar</Text>
                 </Pressable>
                   
-                <Pressable style={[style.btn, style.btnEliminar]}>
+                <Pressable style={[style.btn, style.btnEliminar]} onPress={()=> pasienteEliminar(id)}>
                     <Text style={style.btnTexto}>Eliminar</Text>
                 </Pressable>
             </View>
@@ -102,7 +101,7 @@ const style = StyleSheet.create({
         textTransform:'uppercase',
         fontWeight:'700',
         fontSize:12,
-        color:'#fffff'
+        color:'#fff'
 
     }
 
