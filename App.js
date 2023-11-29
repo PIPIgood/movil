@@ -24,8 +24,11 @@ export default function App() {
           text: 'cancelar'
         },
         {
-          text:'Si,eliminar', onPress:() =>{
-            console.log('eliminando...')
+          text:'Si,eliminar', onPress:() => {
+            const PacientesActualiados = pasientes.filter(
+              pasientesState => pasientesState.id !== id
+            )
+            setPacientes(PacientesActualiados)
           }
         }
       ]

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+    import React, { useEffect, useState } from "react";
 import {
     Modal,
     Pressable,
@@ -54,9 +54,17 @@ function formulario({ modalVisible, setActive, pacientes, setPacientes, pasiente
             fecha: Date.now()
             // sintomas,
         }
-
+        if(id){
+            NuevoPaciente.id=id
+            const PacientesActualiados = pacientes.map(pacienteState =>
+                pacienteState === NuevoPaciente.id ? NuevoPaciente : pacienteState)
+                setPaciente(PacientesActualiados)
+                setPacienteApp({})
+        }else{
+            NuevoPaciente.id = Date.now()
+            setPaciente([...pacientes,NuevoPaciente])
+        }      
         
-        setPacientes(prevState => [...prevState, NuevoPaciente])
         setActive(!modalVisible)
 
         setPaciente('')
@@ -66,6 +74,9 @@ function formulario({ modalVisible, setActive, pacientes, setPacientes, pasiente
         setFecha('')
         setSintomas('')
     }
+
+
+
 
     return (
         <Modal animationType="slide" visible={modalVisible}>
